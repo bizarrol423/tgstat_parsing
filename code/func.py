@@ -83,7 +83,7 @@ def get_name(text_page):
     soup = soup.find_all("div", class_="text-truncate")
     names = []
     for index, name in enumerate(soup):
-        if (index % 2 == 0):
+        if (index % 6 == 0):
             names.append(name.text)
     return names
 
