@@ -4,7 +4,9 @@ import requests
 import data
 from bs4 import BeautifulSoup
 
-
+'''
+получение данных и скаичвание файлов
+'''
 def pars_data(url, q='', inAbout='0',
               categories=[],countries="Россия",
               languages="Руссикй",channelType = "",
@@ -51,7 +53,7 @@ def pars_data(url, q='', inAbout='0',
     responce.encoding = 'utf-8'
     page = json.loads(str(responce.text))['html']
     soup = BeautifulSoup(page, 'lxml')
-    links = soup.find_all('a', class_='text-body')
+    links = soup.find_all('a', {'target':'_blank'})
     names = get_name(page)
     photos = get_photo(page)
     for name, link, photo in zip(names, links, photos):
@@ -62,7 +64,9 @@ def pars_data(url, q='', inAbout='0',
         time.sleep(1)
         print(name, link, photo)
 
-
+'''
+получение фото
+'''
 def get_photo(text_page):
     soup = BeautifulSoup(text_page, 'lxml')
     soup = soup.find_all("img", class_="rounded-circle")
@@ -71,6 +75,9 @@ def get_photo(text_page):
         photo.append("https:"+i.get("src"))
     return photo
 
+'''
+получение имени
+'''
 def get_name(text_page):
     soup = BeautifulSoup(text_page, 'lxml')
     soup = soup.find_all("div", class_="text-truncate")
@@ -80,7 +87,9 @@ def get_name(text_page):
             names.append(name.text)
     return names
 
-
+'''
+получение категорий
+'''
 def get_categories(categories):
     categories = categories.split(',')
     return_array = []
@@ -88,7 +97,9 @@ def get_categories(categories):
         return_array.append(data.category.get(i))
     return return_array
 
-    
+'''
+получение стран
+'''
 def get_countries(countries):
     countries = countries.split(',')
     return_array = []
@@ -96,6 +107,9 @@ def get_countries(countries):
         return_array.append(data.countries.get(i))
     return return_array
 
+'''
+получение языков
+'''
 def get_languages(languages):
     languages = languages.split(',')
     return_array = []
@@ -103,6 +117,9 @@ def get_languages(languages):
         return_array.append(data.languages.get(i))
     return return_array
 
+'''
+создание словаря
+'''
 def change_data(q,inAbout,categories,countries,languages,
                    channelType,
                    isVerified,
